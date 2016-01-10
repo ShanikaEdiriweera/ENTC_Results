@@ -1,0 +1,24 @@
+{# app/Resources/views/student/viewall.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Students
+{% endblock %}
+
+{% block links %}
+    <div class="btn-group" >
+       <a href="{{url('student_create')}}"> <button type="button" class="btn btn-xs btn-success">Create Student</button></a>
+    </div>
+{% endblock %}
+
+
+{% block body %}
+<ul>
+    {% for student in students %}
+        <li>
+        	<a href="{{url('student_view',{'id':student.id})}}">{{ student.indexNo|e }} - {{ student.name|e }} - {{ student.cGPA|e }} - {{ student.rank|e }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
