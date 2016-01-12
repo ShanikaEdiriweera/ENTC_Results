@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Semester3
+ * Semester_results
  *
- * @ORM\Table(name="semester3")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Semester3Repository")
+ * @ORM\Table(name="semester_results")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Semester_resultsRepository")
  */
-class Semester3
+class Semester_results
 {
     /**
      * @var int
@@ -22,23 +22,30 @@ class Semester3
     private $id;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="s_id", type="string", length=7, unique=true)
+     * @ORM\Column(name="sem_id", type="integer")
      */
-    private $sId;
+    private $semId;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="stu_id", type="integer")
+     */
+    private $stuId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="GPA", type="decimal", precision=5, scale=4)
+     * @ORM\Column(name="GPA", type="decimal", precision=5, scale=4, nullable=true)
      */
     private $gPA;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="rank", type="integer")
+     * @ORM\Column(name="rank", type="integer", nullable=true)
      */
     private $rank;
 
@@ -54,27 +61,51 @@ class Semester3
     }
 
     /**
-     * Set sId
+     * Set semId
      *
-     * @param string $sId
+     * @param integer $semId
      *
-     * @return Semester3
+     * @return Semester_results
      */
-    public function setSId($sId)
+    public function setSemId($semId)
     {
-        $this->sId = $sId;
+        $this->semId = $semId;
 
         return $this;
     }
 
     /**
-     * Get sId
+     * Get semId
      *
-     * @return string
+     * @return int
      */
-    public function getSId()
+    public function getSemId()
     {
-        return $this->sId;
+        return $this->semId;
+    }
+
+    /**
+     * Set stuId
+     *
+     * @param integer $stuId
+     *
+     * @return Semester_results
+     */
+    public function setStuId($stuId)
+    {
+        $this->stuId = $stuId;
+
+        return $this;
+    }
+
+    /**
+     * Get stuId
+     *
+     * @return int
+     */
+    public function getStuId()
+    {
+        return $this->stuId;
     }
 
     /**
@@ -82,7 +113,7 @@ class Semester3
      *
      * @param string $gPA
      *
-     * @return Semester3
+     * @return Semester_results
      */
     public function setGPA($gPA)
     {
@@ -106,7 +137,7 @@ class Semester3
      *
      * @param integer $rank
      *
-     * @return Semester3
+     * @return Semester_results
      */
     public function setRank($rank)
     {

@@ -31,7 +31,7 @@ class Grade
     /**
      * @var string
      *
-     * @ORM\Column(name="mark", type="decimal", precision=2, scale=1, unique=true)
+     * @ORM\Column(name="mark", type="decimal", precision=2, scale=1, unique=false)
      */
     private $mark;
 

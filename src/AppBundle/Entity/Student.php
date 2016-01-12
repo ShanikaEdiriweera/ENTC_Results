@@ -51,79 +51,75 @@ class Student
     private $rank;
 
 
-    // public function save()
-    // {
-    // 	$con = Connection::getConnectionObject()->getConnection();
+    public function save()
+    {
+    	$con = Connection::getConnectionObject()->getConnection();
 
-    //     if($this->id ==null)
-    //     {           	        
-	   //      $stmt = $con->prepare('INSERT INTO `player` (`name`,`index_number`, `date_of_birth`, `year`, `department_id`, `address`, `blood_type`) VALUES (?,?,   ?,?,?,?,?)');  
-	   //      $stmt->bind_param("sssiiss",$this->name,$this->indexNumber,$this->dateOfBirth,$this->year,$this->departmentId,$this->address,$this->bloodType);  
-	   //      $stmt->execute();  
-	   //      $stmt->close();
-    //     }
-    //     else
-    //     {
-	   //      $stmt = $con->prepare('UPDATE player SET name =?,index_number=?,date_of_birth=?,year=?,department_id=?,address=?,blood_type=? WHERE player.id = id');  
-	   //      $stmt->bind_param("sssiiss",$this->name,$this->indexNumber,$this->dateOfBirth,$this->year,$this->departmentId,$this->address,$this->bloodType);  
-	   //      $stmt->execute();  
-	   //      $stmt->close();   
-    //     }
+        if($this->id ==null)
+        {           	        
+	        $stmt = $con->prepare('INSERT INTO `student` (`name`,`index_no`) VALUES (?,?)');  
+	        $stmt->bind_param("ss",$this->name,$this->indexNo);  
+	        $stmt->execute();  
+	        $stmt->close();
+        }
+        else
+        {
+	        $stmt = $con->prepare('UPDATE player SET name =?,index_no=?');  
+	        $stmt->bind_param("ss",$this->name,$this->indexNo);  
+	        $stmt->execute();  
+	        $stmt->close();   
+        }
 
-    //     $con->close();
-    // }
+        $con->close();
+    }
 
-    // public static function getOne($id)
-    // {
-    //     $con = Connection::getConnectionObject()->getConnection();
-    //     // Check connection
-    //     if (mysqli_connect_errno())
-    //     {
-    //         echo "Failed to connect to MySQL: " . mysqli_connect_error();
-    //     }
+    public static function getOne($id)
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+        // Check connection
+        if (mysqli_connect_errno())
+        {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
 
-    //     $player = new Player();
-    //     $stmt = $con->prepare('SELECT id,name,index_number,year,date_of_birth,address,blood_type,department_id FROM player WHERE id=?');
-    //     $stmt->bind_param("s",$id);
-    //     $stmt->execute();
+        $student = new Student();
+        $stmt = $con->prepare('SELECT id,name,index_no,CGPA,rank FROM student WHERE id=?');
+        $stmt->bind_param("s",$id);
+        $stmt->execute();
 
-    //     $stmt->bind_result($player->id,$player->name,$player->index_number,$player->year,$player->date_of_birth,$player->address,$player->blood_type,$player->department_id);
-    //     $stmt->fetch();
-    //     $stmt->close();
-    //     return $player;
-    // }
-    //     public static function getAll()
-    // {
-    //     $con = Connection::getConnectionObject()->getConnection();
-    //     // Check connection
-    //     if (mysqli_connect_errno())
-    //     {
-    //         echo "Failed to connect to MySQL: " . mysqli_connect_error();
-    //     }
-
-    //      $players = array(); //Make an empty array
-    //     $stmt = $con->prepare('SELECT id,name,index_number,year,date_of_birth,address,blood_type,department_id FROM player');
-    //     $stmt->execute();
-    //     $stmt->bind_result($id,$name,$indexNumber,$year,$dateOfBirth,$address,$bloodType,$departmentId);
-    //     while($stmt->fetch())
-    //     {
-    //         $player = new Player();
-    //         $player->id=$id;
-    //         $player->setName($name);
-    //         $player->setIndexNumber($indexNumber);
-    //         $player->setYear($year);
-    //         $player->setDateOfBirth($dateOfBirth);
-    //         $player->setAddress($address);
-    //         $player->setBloodType($bloodType);
-    //         $player->setDepartmentId($departmentId);
-
-    //         array_push($players,$player); //Push one by one
-    //     }
-    //     $stmt->close();
+        $stmt->bind_result($student->id,$student->name,$student->indexNo,$student->cGPA,$student->rank);
+        $stmt->fetch();
+        $stmt->close();
+        return $student;
+    }
         
-    //     return $players;
+    public static function getAll()
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+        // Check connection
+        if (mysqli_connect_errno())
+        {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
 
-    // }
+        $students = array(); //Make an empty array
+        $stmt = $con->prepare('SELECT id,name,index_no,CGPA,rank FROM student');
+        $stmt->execute();
+        $stmt->bind_result($id,$name,$indexNo,$cGPA,$rank);
+        while($stmt->fetch())
+        {
+            $student = new Student();
+            $student->id=$id;
+            $student->setName($name);
+            $student->setIndexNo($indexNo);
+            $student->setCGPA($cGPA);
+            $student->setRank($rank);
+            array_push($students,$student); //Push one by one
+        }
+        $stmt->close();
+        
+        return $students;
+    }
 
     /**
      * Get id

@@ -5,16 +5,17 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Student;   
+use AppBundle\Entity\Module;
+use AppBundle\Entity\student_module_result;   
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType; 
 
-class StudentController extends Controller
+class ModuleController extends Controller
 {
 
     /**
-     * @Route("/student/", name="student_home")
+     * @Route("/module/", name="student_home")
      */
     public function indexAction(Request $request)
     {
