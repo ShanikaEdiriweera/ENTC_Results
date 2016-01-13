@@ -12,14 +12,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 final class Connection extends Controller
 {
     private $con;
+        static $conn = null ;
     
     public static function getConnectionObject()
     {
-        static $conn =null ;
-        if ($conn === null) {
-            $conn = new connection();
+        if (self::$conn === null) { //self === Connection
+            Connection::$conn = new Connection();
         }
-        return  $conn;
+        return  Connection::$conn;
     }
 
 

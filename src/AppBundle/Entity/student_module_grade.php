@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Controller\Connection;
 
 /**
  * student_module_grade
@@ -42,6 +43,33 @@ class student_module_grade
      */
     private $grade;
 
+
+    public static function getModuleResults($mCode)
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+        // Check connection
+        if (mysqli_connect_errno())
+        {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+
+        $results = array(); //Make an empty array
+        $stmt = $con->prepare('SELECT id,s_id,m_code,grade FROM student_module_grade');
+        $stmt->execute();
+        $stmt->bind_result($id,$sId,$mCode,$grade);
+        while($stmt->fetch())
+        {
+            $result = new student_module_grade();
+            $result->id=$id;
+            $result->setSId($sId);
+            $result->setMCode($mCode);
+            $result->setGrade($grade);
+            array_push($results,$result); //Push one by one
+        }
+        $stmt->close();
+        
+        return $results;
+    }
 
     /**
      * Get id

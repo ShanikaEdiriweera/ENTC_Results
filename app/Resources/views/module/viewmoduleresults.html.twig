@@ -1,0 +1,17 @@
+{# app/Resources/views/module/viewmoduleresults.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{code}} - Results
+{% endblock %}
+
+{% block body %}
+<ul>
+    {% for result in results %}
+        <li>
+        	<a href="{{url('module_results',{'id':result.id})}}">{{ result.sId|e }} - {{ result.grade|e }} </a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use AppBundle\Controller\Connection;
 
 /**
  * Module
@@ -65,14 +64,14 @@ class Module
         if($this->id ==null)
         {                       
             $stmt = $con->prepare('INSERT INTO `module` (`code`,`title`,`sem_id`,`credits`,`gpa`) VALUES (?,?,?,?,?)');  
-            $stmt->bind_param("ssids",$this->code,$this->title,$this->semId,$this->credits,$this->gpa);  
+            $stmt->bind_param("ssisds",$this->code,$this->title,$this->semId,$this->credits,$this->gpa);  
             $stmt->execute();  
             $stmt->close();
         }
         else
         {
             $stmt = $con->prepare('UPDATE module SET (`code`,`title`,`sem_id`,`credits`,`gpa`) VALUES (?,?,?,?,?)');  
-            $stmt->bind_param("ssids",$this->code,$this->title,$this->semId,$this->credits,$this->gpa);  
+            $stmt->bind_param("ssisds",$this->code,$this->title,$this->semId,$this->credits,$this->gpa);  
             $stmt->execute();  
             $stmt->close();   
         }
@@ -90,7 +89,7 @@ class Module
         }
 
         $module = new Module();
-        $stmt = $con->prepare('SELECT `id`,`code`,`title`,`sem_id`,`credits`,`gpa` FROM module WHERE id=?');
+        $stmt = $con->prepare('SELECT `code`,`title`,`sem_id`,`credits`,`gpa` FROM module WHERE id=?');
         $stmt->bind_param("s",$id);
         $stmt->execute();
 
@@ -110,7 +109,7 @@ class Module
         }
 
         $modules = array(); //Make an empty array
-        $stmt = $con->prepare('SELECT id,code,title,sem_id,credits,gpa FROM module');
+        $stmt = $con->prepare('SELECT `id`,`code`,`title`,`sem_id`,`credits`,`gpa` FROM student');
         $stmt->execute();
         $stmt->bind_result($id,$code,$title,$semId,$credits,$gpa);
         while($stmt->fetch())
@@ -119,9 +118,8 @@ class Module
             $module->id=$id;
             $module->setTitle($title);
             $module->setCode($code);
-            $module->setSemId($semId);
-            $module->setCredits($credits);
-            $module->setGpa($gpa);
+            $module->set($cGPA);
+            $module->setRank($rank);
             array_push($modules,$module); //Push one by one
         }
         $stmt->close();
@@ -235,28 +233,5 @@ class Module
     {
         return $this->gpa;
     }
-
-    /**
-     * Set semId
-     *
-     * @param integer $semId
-     *
-     * @return Module
-     */
-    public function setSemId($semId)
-    {
-        $this->semId = $semId;
-
-        return $this;
-    }
-
-    /**
-     * Get semId
-     *
-     * @return integer
-     */
-    public function getSemId()
-    {
-        return $this->semId;
-    }
 }
+
