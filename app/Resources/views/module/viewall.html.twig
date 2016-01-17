@@ -16,7 +16,7 @@ Modules
 <ul>
     {% for module in modules %}
         <li>
-        	<a href="{{url('module_results',{'mod_code':module.id})}}">{{ module.code|e }} - {{ module.title|e }} - {{ module.credits|e }} - {{ module.gpa|e }} - {{ module.semId|e }} </a>
+        	<a href="{{url('module_results',{'mod_code':module.code})}}">{{ module.code|e }} - {{ module.title|e }} - {{ module.credits|e }} - {{ module.gpa|e }} - {{ module.semId|e }} </a>
         </li>
     {% endfor %}
 </ul>

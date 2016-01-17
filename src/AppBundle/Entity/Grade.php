@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Controller\Connection;
 
 /**
  * Grade
@@ -35,6 +36,52 @@ class Grade
      */
     private $mark;
 
+
+    public static function getOne($id)
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+        // Check connection
+        if (mysqli_connect_errno())
+        {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+
+        $grade = new Grade();
+        $stmt = $con->prepare('SELECT `id`,`grade`,`mark` FROM grade WHERE id=?');
+        $stmt->bind_param("s",$id);
+        $stmt->execute();
+
+        $stmt->bind_result($grade->id,$grade->grade,$grade->mark);
+        $stmt->fetch();
+        $stmt->close();
+        return $grade;
+    }
+        
+    public static function getAll()
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+        // Check connection
+        if (mysqli_connect_errno())
+        {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+
+        $grades = array(); //Make an empty array
+        $stmt = $con->prepare('SELECT id,grade,mark FROM grade');
+        $stmt->execute();
+        $stmt->bind_result($id,$grd,$mark);
+        while($stmt->fetch())
+        {
+            $grade = new Grade();
+            $grade->id=$id;
+            $grade->setGrade($grd);
+            $grade->setMark($mark);
+            array_push($grades,$grade); //Push one by one
+        }
+        $stmt->close();
+        
+        return $grades;
+    }
 
     /**
      * Get id

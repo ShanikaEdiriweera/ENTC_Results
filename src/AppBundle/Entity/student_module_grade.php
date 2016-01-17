@@ -43,6 +43,27 @@ class student_module_grade
      */
     private $grade;
 
+    public function save()
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+
+        if($this->id ==null)
+        {                       
+            $stmt = $con->prepare('INSERT INTO `student_module_grade` (`s_id`,`m_code`,`grade`) VALUES (?,?,?)');  
+            $stmt->bind_param("iss",$this->sId,$this->mCode,$this->grade);  
+            $stmt->execute();  
+            $stmt->close();
+        }
+        else
+        {
+            $stmt = $con->prepare('UPDATE student_module_grade SET (`s_id`,`m_code`,`grade`) VALUES (?,?,?)');  
+            $stmt->bind_param("iss",$this->sId,$this->mCode,$this->grade);  
+            $stmt->execute();  
+            $stmt->close();   
+        }
+
+        $con->close();
+    }
 
     public static function getModuleResults($mCode)
     {
