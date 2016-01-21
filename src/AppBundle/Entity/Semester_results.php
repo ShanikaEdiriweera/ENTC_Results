@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Controller\Connection;
 
 /**
  * Semester_results
@@ -48,6 +49,9 @@ class Semester_results
      * @ORM\Column(name="rank", type="integer", nullable=true)
      */
     private $rank;
+
+    private $studentName;
+    private $studentIndex;
 
 
     public function save()
@@ -120,7 +124,7 @@ class Semester_results
         return $results;
     }
 
-    public static function getAllSemester($sem_id)
+    public static function getAllSemester($semester_id)
     {
         $con = Connection::getConnectionObject()->getConnection();
         // Check connection
@@ -130,10 +134,13 @@ class Semester_results
         }
 
         $results = array(); //Make an empty array
+        // $stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank,name,index_no FROM semester_results INNER JOIN student ON semester_results.stu_id = student.id WHERE sem_id = ?');
+        //$stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank,name,index_no FROM semester_results,student WHERE semester_results.stu_id = student.id AND sem_id = ?');
         $stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank FROM semester_results WHERE sem_id = ?');
-        $stmt->bind_param("s",$sem_id);
+        $stmt->bind_param("s",$semester_id);
         $stmt->execute();
 
+        //$stmt->bind_result($id,$semId,$stuId,$gPA,$rank,$name,$index);
         $stmt->bind_result($id,$semId,$stuId,$gPA,$rank);
         while($stmt->fetch())
         {
@@ -143,6 +150,8 @@ class Semester_results
             $result->setStuId($stuId);
             $result->setGPA($gPA);
             $result->setRank($rank);
+            //$result->setStudentName($name);
+            //$result->setStudentIndex($index);
             array_push($results,$result); //Push one by one
         }
         $stmt->close();
@@ -254,6 +263,31 @@ class Semester_results
     public function getRank()
     {
         return $this->rank;
+    }
+
+
+    public function setStudentName($name)
+    {
+        $this->studentName = $name;
+
+        return $this;
+    }
+
+    public function getStudentName()
+    {
+        return $this->studentName;
+    }
+
+    public function setStudentIndex($index)
+    {
+        $this->studentIndex = $index;
+
+        return $this;
+    }
+
+    public function getStudentIndex()
+    {
+        return $this->studentIndex;
     }
 }
 

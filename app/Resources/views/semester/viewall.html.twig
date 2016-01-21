@@ -1,19 +1,27 @@
-{# app/Resources/semester/view.html.twig #}
+{# app/Resources/semester/viewall.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}
-{{semester.name}} Results
+Semester Results
 {% endblock %}
 
 {% block body %}
 <div class="results">
-	<ul>
-    {% for result in results %}
+
+    {% for semester in semesters %}
+    <h3>{{semester.name | e}}</h3>
+
+    <ul>
+    	{% for result in results %}
         <li>
+        	<?php echo "hi"; ?>
         	{{ result.studentIndex |e }} - {{ result.studentName |e }} - {{ result.gPA}} - {{ result.rank}}
         </li>
-    {% endfor %}
+    	{% endfor %}
 	</ul>
+    {% endfor %}
+
+	
 	
 </div> 
 {% endblock %}

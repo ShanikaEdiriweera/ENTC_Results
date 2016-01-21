@@ -54,7 +54,8 @@ class SemesterController extends Controller
     public function viewAction($id, Request $request)
     {
         $semester =  Semester::getOne($id);
-        return $this->render('semester/view.html.twig', array('semester' =>$semester));  
+        $semResults = Semester_results::getAllSemester($id);
+        return $this->render('semester/view.html.twig', array('semester' =>$semester, 'results' => $semResults));  
     }
 
     /**
@@ -63,7 +64,8 @@ class SemesterController extends Controller
     public function viewallAction( Request $request)
     {
         $semesters = Semester::getAll();
-        return $this->render('semester/viewall.html.twig', array('semesters' => $semesters));
+        $semResults = Semester_results::getAll();
+        return $this->render('semester/viewall.html.twig', array('semesters' => $semesters, 'results' => $semResults));
     }
 }
 
