@@ -50,6 +50,106 @@ class Semester_results
     private $rank;
 
 
+    public function save()
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+
+        if($this->id ==null)
+        {                       
+            $stmt = $con->prepare('INSERT INTO `semester_results` (`sem_id`,`stu_id`,`GPA`,`rank`) VALUES (?,?,?,?)');  
+            $stmt->bind_param("iisi",$this->semId,$this->stuId,$this->gPA,$this->rank);  
+            $stmt->execute();  
+            $stmt->close();
+        }
+        else
+        {
+            $stmt = $con->prepare('UPDATE `semester_results` (`sem_id`,`stu_id`,`GPA`,`rank`) VALUES (?,?,?,?) WHERE id = ?');  
+            $stmt->bind_param("iisii",$this->semId,$this->stuId,$this->gPA,$this->rank,$this->id);  
+            $stmt->execute();  
+            $stmt->close();   
+        }
+
+        $con->close();
+    }
+
+    public static function getOne($id)
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+        // Check connection
+        if (mysqli_connect_errno())
+        {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+
+        $result = new Semester_results();
+        $stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank FROM semester_results WHERE id=?');
+        $stmt->bind_param("s",$id);
+        $stmt->execute();
+
+        $stmt->bind_result($result->id,$result->semId,$result->stuId,$result->gPA,$result->rank);
+        $stmt->fetch();
+        $stmt->close();
+        return $result;
+    }
+        
+    public static function getAll()
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+        // Check connection
+        if (mysqli_connect_errno())
+        {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+
+        $results = array(); //Make an empty array
+        $stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank FROM semester_results');
+        $stmt->execute();
+        $stmt->bind_result($id,$semId,$stuId,$gPA,$rank);
+        while($stmt->fetch())
+        {
+            $result = new Semester_results();
+            $result->id=$id;
+            $result->setSemId($semId);
+            $result->setStuId($stuId);
+            $result->setGPA($gPA);
+            $result->setRank($rank);
+            array_push($results,$result); //Push one by one
+        }
+        $stmt->close();
+        
+        return $results;
+    }
+
+    public static function getAllSemester($sem_id)
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+        // Check connection
+        if (mysqli_connect_errno())
+        {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+
+        $results = array(); //Make an empty array
+        $stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank FROM semester_results WHERE sem_id = ?');
+        $stmt->bind_param("s",$sem_id);
+        $stmt->execute();
+
+        $stmt->bind_result($id,$semId,$stuId,$gPA,$rank);
+        while($stmt->fetch())
+        {
+            $result = new Semester_results();
+            $result->id=$id;
+            $result->setSemId($semId);
+            $result->setStuId($stuId);
+            $result->setGPA($gPA);
+            $result->setRank($rank);
+            array_push($results,$result); //Push one by one
+        }
+        $stmt->close();
+        
+        return $results;
+    }
+
     /**
      * Get id
      *
