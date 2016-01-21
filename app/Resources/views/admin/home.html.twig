@@ -1,0 +1,23 @@
+{# app/Resources/views/admin/home.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+System Administration
+{% endblock %}
+
+{% block body %}
+<div class="generate-results">
+	<ul>
+    {% for semester in semesters %}
+        <li class="semester-list">
+        	{{ semester.name |e }} -
+        	<div class="btn-group" >
+		       <a href="#"> <button type="button" class="btn btn-xs btn-success">Update Results</button></a>
+		       
+		    </div>
+        </li>
+    {% endfor %}
+	</ul>
+	
+</div>  
+{% endblock %}

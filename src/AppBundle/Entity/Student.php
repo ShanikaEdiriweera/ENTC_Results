@@ -64,8 +64,8 @@ class Student
         }
         else
         {
-	        $stmt = $con->prepare('UPDATE player SET name =?,index_no=?');  
-	        $stmt->bind_param("ss",$this->name,$this->indexNo);  
+	        $stmt = $con->prepare('UPDATE student SET name =?,index_no=? WHERE id = ?');  
+	        $stmt->bind_param("ssi",$this->name,$this->indexNo,$this->id);  
 	        $stmt->execute();  
 	        $stmt->close();   
         }

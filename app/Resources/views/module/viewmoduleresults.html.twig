@@ -9,7 +9,7 @@
 <ul>
     {% for result in results %}
         <li>
-        	<a href="{{url('module_results',{'id':result.id})}}">{{ result.sId|e }} - {{ result.grade|e }} </a>
+        	<a href="{{url('module_results',{'mod_code':result.mCode})}}">{{ result.sId|e }} - {{ result.grade|e }} </a>
         </li>
     {% endfor %}
 </ul>

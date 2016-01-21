@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Controller\Connection;
 
 /**
  * Admin
@@ -49,6 +50,28 @@ class Admin
      */
     private $passwordHash;
 
+
+    public function save()
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+
+        if($this->id ==null)
+        {                       
+            $stmt = $con->prepare('INSERT INTO `admin` (`name`,`username`,`email`,`password_hash`) VALUES (?,?,?,?)');  
+            $stmt->bind_param("ssss",$this->name,$this->username,$this->email,$this->passwordHash);  
+            $stmt->execute();  
+            $stmt->close();
+        }
+        else
+        {
+            $stmt = $con->prepare('UPDATE admin SET name =?,username=?,email =?,password_hash=? WHERE id = ?');  
+            $stmt->bind_param("ssssi",$this->name,$this->username,$this->email,$this->passwordHash,$this->id);  
+            $stmt->execute();  
+            $stmt->close();   
+        }
+
+        $con->close();
+    }
 
     /**
      * Get id

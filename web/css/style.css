@@ -6,3 +6,7 @@
 /*#cssmenu.align-right ul{
   	float: right;
 }*/
+
+.semester-list li {
+	padding: 5px;
+}

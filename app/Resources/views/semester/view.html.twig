@@ -1,0 +1,23 @@
+{# app/Resources/semester/view.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{semester.name}} Results
+{% endblock %}
+
+{% block body %}
+<div class="results">
+	<ul>
+    {% for result in results %}
+        <li>
+        	{{ semester.name |e }} -
+        	<div class="btn-group" >
+		       <a href="#"> <button type="button" class="btn btn-xs btn-success">Update Results</button></a>
+		       
+		    </div>
+        </li>
+    {% endfor %}
+	</ul>
+	
+</div> 
+{% endblock %}
