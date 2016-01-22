@@ -7,6 +7,10 @@
   	float: right;
 }*/
 
-.semester-list li {
+/*.semester-list li {
 	padding: 5px;
+}*/
+
+li {
+	padding: 3px;
 }

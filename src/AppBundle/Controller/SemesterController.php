@@ -22,31 +22,31 @@ class SemesterController extends Controller
         return $this->redirectToRoute('semester_viewAll');
     }
 
-    // /**
-    //  * @Route("/semester/create", name="semester_create")
-    //  */
-    // public function createAction(Request $request)
-    // {
+    /**
+     * @Route("/semester/update/{id}", name="semester_update")
+     */
+    public function updateAction($id,Request $request)
+    {
 
-    //     $semester = new Semester(); 
+        $semester = new Semester(); 
 
-    //     $form = $this->createFormBuilder($semester)
-    //         ->add('name',TextType::class)
-    //         ->add('save', SubmitType::class, array('label' => 'Create Semester'))
-    //         ->getForm();
+        $form = $this->createFormBuilder($semester)
+            ->add('name',TextType::class)
+            ->add('save', SubmitType::class, array('label' => 'Create Semester'))
+            ->getForm();
 
-    //     $form->handleRequest($request);
+        $form->handleRequest($request);
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         // ... perform some action, such as saving the task to the database
-    //         $semester->save();
+        if ($form->isSubmitted() && $form->isValid()) {
+            // ... perform some action, such as saving the task to the database
+            $semester->save();
 
-    //         return $this->redirectToRoute('semester_home');
-    //     }
+            return $this->redirectToRoute('semester_home');
+        }
 
-    //     // replace this example code with whatever you need
-    //     return $this->render('semester/create.html.twig', array('form' => $form->createView()));
-    // }
+        // replace this example code with whatever you need
+        return $this->render('semester/create.html.twig', array('form' => $form->createView()));
+    }
 
     /**
      * @Route("/semester/view/{id}", name="semester_view")

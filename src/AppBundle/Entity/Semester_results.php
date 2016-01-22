@@ -76,6 +76,42 @@ class Semester_results
         $con->close();
     }
 
+    public static function updateGpa($semester_id)
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+        // Check connection
+        if (mysqli_connect_errno())
+        {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+
+        $results = Semester_results::getAllSemester($semester_id); //Make an empty array
+
+
+        foreach($results as $result){
+            //vars for calculate gpa
+            $totalMark = 0.0000;
+            $totalCredits = 0.0;
+
+            //query to get the marks and credits
+            $stmt = $con->prepare('SELECT module.credits,grade.mark FROM module,student_module_grade,grade,student WHERE module.code = student_module_grade.m_code AND student_module_grade.grade = grade.grade AND student_module_grade.s_id = student.index_no AND module.gpa = true AND student.id = ? AND module.sem_id = ?');
+            $stmt->bind_param("ss",$result->stuId,$semester_id);
+            $stmt->execute();
+
+            $stmt->bind_result($credits,$mark);
+            while($stmt->fetch())
+            {
+                $totalMark += $mark;
+                $totalCredits += $credits;
+            }    
+
+            //adding the gpa to the result object
+            $result->gPA = $totalMark / $totalCredits;
+        }
+        
+        return $results;
+    }
+
     public static function getOne($id)
     {
         $con = Connection::getConnectionObject()->getConnection();
