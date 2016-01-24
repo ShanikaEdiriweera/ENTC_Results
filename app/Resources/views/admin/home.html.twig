@@ -12,9 +12,10 @@ System Administration
         <li class="semester-list">
         	{{ semester.name |e }} -
         	<div class="btn-group" >
-		       <a href="#"> <button type="button" class="btn btn-xs btn-success">Update Results</button></a>
+		       <a href="{{url('semester_update',{'id':semester.id})}}"> <button type="button" class="btn btn-xs btn-success">Update Results</button></a>
 		       
 		    </div>
+		    
         </li>
     {% endfor %}
 	</ul>

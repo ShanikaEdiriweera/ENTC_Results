@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Controller\Connection;
+use AppBundle\Entity\Student;
+
 
 /**
  * Semester_results
@@ -57,6 +59,10 @@ class Semester_results
     public function save()
     {
         $con = Connection::getConnectionObject()->getConnection();
+        if (mysqli_connect_errno())
+        {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
 
         if($this->id ==null)
         {                       
@@ -67,8 +73,8 @@ class Semester_results
         }
         else
         {
-            $stmt = $con->prepare('UPDATE `semester_results` (`sem_id`,`stu_id`,`GPA`,`rank`) VALUES (?,?,?,?) WHERE id = ?');  
-            $stmt->bind_param("iisii",$this->semId,$this->stuId,$this->gPA,$this->rank,$this->id);  
+            $stmt = $con->prepare('UPDATE semester_results SET sem_id = ?,stu_id = ?,GPA=?,rank=? WHERE id = ?');    
+            $stmt->bind_param("iissi",$this->semId,$this->stuId,$this->gPA,$this->rank,$this->id);  
             $stmt->execute();  
             $stmt->close();   
         }
@@ -85,28 +91,52 @@ class Semester_results
             echo "Failed to connect to MySQL: " . mysqli_connect_error();
         }
 
-        $results = Semester_results::getAllSemester($semester_id); //Make an empty array
+        $students = Student::getAll();
 
+        $results = Semester_results::getAllSemester($semester_id); 
+
+        //check student in semester_resultsr
+        
+        foreach ($students as $student) {
+            $inResults = false;
+            foreach ($results as $result) {
+                if ($student->getId() == $result->stuId) {
+                    $inResults = true;
+                    break;
+                }
+            }
+            if ($inResults == false) {
+                $result = new Semester_results();
+                $result->setStuId($student->getId());
+                $result->setSemId($semester_id);
+                array_push($results, $result);
+            }
+        }
 
         foreach($results as $result){
             //vars for calculate gpa
             $totalMark = 0.0000;
             $totalCredits = 0.0;
+            
+            //die($result->stuId);
 
             //query to get the marks and credits
-            $stmt = $con->prepare('SELECT module.credits,grade.mark FROM module,student_module_grade,grade,student WHERE module.code = student_module_grade.m_code AND student_module_grade.grade = grade.grade AND student_module_grade.s_id = student.index_no AND module.gpa = true AND student.id = ? AND module.sem_id = ?');
-            $stmt->bind_param("ss",$result->stuId,$semester_id);
+            $stmt = $con->prepare('SELECT module.credits,grade.mark FROM module,student_module_grade,grade,student WHERE module.code = student_module_grade.m_code AND student_module_grade.grade = grade.grade AND student_module_grade.s_id = student.index_no AND module.gpa = true AND student.id = ?');
+            $stmt->bind_param("s",$result->stuId);
             $stmt->execute();
 
             $stmt->bind_result($credits,$mark);
             while($stmt->fetch())
             {
-                $totalMark += $mark;
+                $totalMark += $mark * $credits;
                 $totalCredits += $credits;
+
             }    
 
             //adding the gpa to the result object
-            $result->gPA = $totalMark / $totalCredits;
+            if ($totalCredits > 0) {
+                $result->gPA = $totalMark / $totalCredits;
+            }
         }
         
         return $results;

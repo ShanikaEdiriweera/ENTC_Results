@@ -17,6 +17,7 @@ class Student
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -31,7 +32,6 @@ class Student
     /**
      * @var string
      *
-     * @ORM\Id
      * @ORM\Column(name="index_no", type="string", length=7, unique=true)
      */
     private $indexNo;

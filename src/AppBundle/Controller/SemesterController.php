@@ -27,25 +27,95 @@ class SemesterController extends Controller
      */
     public function updateAction($id,Request $request)
     {
+        //there is an error - Warning: mysqli::prepare(): Couldn't fetch mysqli occurring - check
 
-        $semester = new Semester(); 
+        // $results = Semester_results::updateGpa($id);
 
-        $form = $this->createFormBuilder($semester)
-            ->add('name',TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Create Semester'))
-            ->getForm();
+        // //
+        // foreach ($results as $result) {
+        //     $result->save();
+        // }
 
-        $form->handleRequest($request);
+        // return $this->redirectToRoute('semester_home');
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // ... perform some action, such as saving the task to the database
-            $semester->save();
 
-            return $this->redirectToRoute('semester_home');
+        //With doctrine
+        $results = $this->getDoctrine()->getRepository('AppBundle:Semester_results')->findBy(array('semId' => $id));
+
+        $students = $this->getDoctrine()->getRepository('AppBundle:Student')->findAll();
+        $modules = $this->getDoctrine()->getRepository('AppBundle:Module')->findBy(array('semId' => $id));
+        $moduleCodes = array();
+        $moduleCredits = array();
+        $moduleIsGpa = array();   //array to keep GPA/non-GPA
+        foreach ($modules as $obj) {
+           array_push($moduleCodes, $obj->getCode());
+           $moduleCredits[$obj->getCode()] = $obj->getCredits();
+           $moduleIsGpa[$obj->getCode()] = $obj->getGpa();
         }
 
-        // replace this example code with whatever you need
-        return $this->render('semester/create.html.twig', array('form' => $form->createView()));
+
+
+        $gradeObjects = $this->getDoctrine()->getRepository('AppBundle:Grade')->findAll();
+        $grades = array();
+        foreach ($gradeObjects as $obj) {
+            $grades[$obj->getGrade()] = $obj->getMark();
+
+        }
+
+
+        $em = $this->getDoctrine()->getManager();
+        
+
+        foreach ($students as $student) {
+            $gs = $student->getGrades();
+
+            $totalMarks = 0.0000;
+            $totalCredits = 0.0;
+            
+
+            foreach ($gs as $g) {
+                //echo $g->getMCode();
+                $code = $g->getMCode();
+                if(in_array($code, $moduleCodes) && $moduleIsGpa[$code])
+                  {             
+                    $totalMarks+=$grades[$g->getGrade()]*$moduleCredits[$code];
+                    $totalCredits += $moduleCredits[$g->getMCode()];
+                }
+            }
+
+            $result = $this->getDoctrine()->getRepository('AppBundle:Semester_results')->findOneBy(array('semId' => $id,'stuId'=>$student->getId()));
+            if($result==null) 
+                {
+                    $result = new Semester_results();
+                    $result->setSemId($id);
+                    $result->setStuId($student->getId());
+
+                }
+
+            if($totalCredits>0)
+                $result->setGPA($totalMarks/$totalCredits);
+            else
+                $result->setGPA(0);
+
+
+            $em->persist($result);
+            $em->flush();
+
+        }
+
+
+
+        $results = $this->getDoctrine()->getRepository('AppBundle:Semester_results')->findBy(array('semId' => $id), array('gPA' => 'DESC') );
+
+        // set ranks - write code
+        foreach ($results as $result) {
+            // $em->persist($result);
+            // $em->flush();
+           //echo $result->getStuId()."<br>";
+        }
+
+        //die();
+        return $this->redirectToRoute('semester_home');
     }
 
     /**
