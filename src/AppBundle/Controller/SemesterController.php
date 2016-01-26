@@ -106,11 +106,19 @@ class SemesterController extends Controller
 
 
         $results = $this->getDoctrine()->getRepository('AppBundle:Semester_results')->findBy(array('semId' => $id), array('gPA' => 'DESC') );
-
-        // set ranks - write code
+        $rank = 1;
+        $lastGpa = 5.0000;
+        // set ranks 
         foreach ($results as $result) {
-            // $em->persist($result);
-            // $em->flush();
+            if ($result->getGpa() == $lastGpa) {
+                $rank--;
+            }
+            $result->setRank($rank);
+            $rank++;
+            $lastGpa = $result->getGpa();
+
+            $em->persist($result);
+            $em->flush();
            //echo $result->getStuId()."<br>";
         }
 
