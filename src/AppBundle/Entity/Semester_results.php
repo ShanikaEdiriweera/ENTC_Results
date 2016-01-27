@@ -52,6 +52,13 @@ class Semester_results
      */
     private $rank;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sem_credits", type="decimal", precision=3, scale=1, nullable=true)
+     */
+    private $semCredits;
+
     private $studentName;
     private $studentIndex;
 
@@ -172,9 +179,12 @@ class Semester_results
         }
 
         $results = array(); //Make an empty array
-        $stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank FROM semester_results');
+        $stmt = $con->prepare('SELECT semester_results.id,semester_results.sem_id,semester_results.stu_id,semester_results.GPA,semester_results.rank,student.name,student.index_no FROM semester_results INNER JOIN student ON semester_results.stu_id = student.id ORDER BY semester_results.rank');
+        //$stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank FROM semester_results');
         $stmt->execute();
-        $stmt->bind_result($id,$semId,$stuId,$gPA,$rank);
+
+        $stmt->bind_result($id,$semId,$stuId,$gPA,$rank,$name,$index);
+        // $stmt->bind_result($id,$semId,$stuId,$gPA,$rank);
         while($stmt->fetch())
         {
             $result = new Semester_results();
@@ -183,6 +193,8 @@ class Semester_results
             $result->setStuId($stuId);
             $result->setGPA($gPA);
             $result->setRank($rank);
+            $result->setStudentName($name);
+            $result->setStudentIndex($index);
             array_push($results,$result); //Push one by one
         }
         $stmt->close();
@@ -200,14 +212,14 @@ class Semester_results
         }
 
         $results = array(); //Make an empty array
-        // $stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank,name,index_no FROM semester_results INNER JOIN student ON semester_results.stu_id = student.id WHERE sem_id = ?');
+        $stmt = $con->prepare('SELECT semester_results.id,semester_results.sem_id,semester_results.stu_id,semester_results.GPA,semester_results.rank,student.name,student.index_no FROM semester_results INNER JOIN student ON semester_results.stu_id = student.id WHERE sem_id = ? ORDER BY semester_results.rank');
         //$stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank,name,index_no FROM semester_results,student WHERE semester_results.stu_id = student.id AND sem_id = ?');
-        $stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank FROM semester_results WHERE sem_id = ?');
+        //$stmt = $con->prepare('SELECT id,sem_id,stu_id,GPA,rank FROM semester_results WHERE sem_id = ?');
         $stmt->bind_param("s",$semester_id);
         $stmt->execute();
 
-        //$stmt->bind_result($id,$semId,$stuId,$gPA,$rank,$name,$index);
-        $stmt->bind_result($id,$semId,$stuId,$gPA,$rank);
+        $stmt->bind_result($id,$semId,$stuId,$gPA,$rank,$name,$index);
+        // $stmt->bind_result($id,$semId,$stuId,$gPA,$rank);
         while($stmt->fetch())
         {
             $result = new Semester_results();
@@ -216,8 +228,8 @@ class Semester_results
             $result->setStuId($stuId);
             $result->setGPA($gPA);
             $result->setRank($rank);
-            //$result->setStudentName($name);
-            //$result->setStudentIndex($index);
+            $result->setStudentName($name);
+            $result->setStudentIndex($index);
             array_push($results,$result); //Push one by one
         }
         $stmt->close();
@@ -354,6 +366,18 @@ class Semester_results
     public function getStudentIndex()
     {
         return $this->studentIndex;
+    }
+
+    public function setSemCredits($credits)
+    {
+        $this->semCredits = $credits;
+
+        return $this;
+    }
+
+    public function getSemCredits()
+    {
+        return $this->semCredits;
     }
 }
 

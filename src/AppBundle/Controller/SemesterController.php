@@ -97,13 +97,12 @@ class SemesterController extends Controller
             else
                 $result->setGPA(0);
 
+            $result->setSemCredits($totalCredits);
 
             $em->persist($result);
             $em->flush();
 
         }
-
-
 
         $results = $this->getDoctrine()->getRepository('AppBundle:Semester_results')->findBy(array('semId' => $id), array('gPA' => 'DESC') );
         $rank = 1;

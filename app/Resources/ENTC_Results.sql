@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 17, 2016 at 02:36 PM
+-- Generation Time: Jan 27, 2016 at 01:14 AM
 -- Server version: 5.5.46-0ubuntu0.14.04.2
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `module` (
   `sem_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_C24262877153098` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `module`
@@ -94,7 +94,10 @@ CREATE TABLE IF NOT EXISTS `module` (
 
 INSERT INTO `module` (`id`, `code`, `title`, `credits`, `gpa`, `sem_id`) VALUES
 (1, 'CS-2022', 'OOSD', 3.0, 1, 3),
-(2, 'EN-2012', 'Digital Electronics', 2.5, 1, 2);
+(2, 'EN-2012', 'Digital Electronics', 2.5, 1, 2),
+(3, 'MA2073', 'Calculus', 2.0, 1, 2),
+(4, 'ME1802', 'Thermo', 3.0, 0, 2),
+(5, 'CS-3042', 'Database Systems', 3.0, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -136,7 +139,19 @@ CREATE TABLE IF NOT EXISTS `semester_results` (
   `GPA` decimal(5,4) DEFAULT NULL,
   `rank` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=20 ;
+
+--
+-- Dumping data for table `semester_results`
+--
+
+INSERT INTO `semester_results` (`id`, `sem_id`, `stu_id`, `GPA`, `rank`) VALUES
+(14, 2, 1, 3.9533, 2),
+(15, 2, 4, 4.0000, 1),
+(16, 2, 5, 3.6133, 3),
+(17, 3, 1, 3.3000, 3),
+(18, 3, 4, 4.2000, 1),
+(19, 3, 5, 3.7000, 2);
 
 -- --------------------------------------------------------
 
@@ -152,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   `rank` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_B723AF335CA03D2E` (`index_no`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `student`
@@ -160,8 +175,8 @@ CREATE TABLE IF NOT EXISTS `student` (
 
 INSERT INTO `student` (`id`, `name`, `index_no`, `CGPA`, `rank`) VALUES
 (1, 'Shanika Ediriweera', '130147J', 0.0000, 0),
-(2, 'Module Class', 'Make th', 0.0000, 0),
-(3, 'way to enter module results', 'Make a', 0.0000, 0);
+(4, 'Ashen Ekanayake', '130150L', 0.0000, 0),
+(5, 'Ravindu Hasantha', '130197K', 0.0000, 0);
 
 -- --------------------------------------------------------
 
@@ -174,16 +189,30 @@ CREATE TABLE IF NOT EXISTS `student_module_grade` (
   `s_id` varchar(7) COLLATE utf8_unicode_ci NOT NULL,
   `m_code` varchar(7) COLLATE utf8_unicode_ci NOT NULL,
   `grade` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
+  `sem_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `student_module_grade`
 --
 
-INSERT INTO `student_module_grade` (`id`, `s_id`, `m_code`, `grade`) VALUES
-(1, '130147', 'CS-2022', 'A+'),
-(2, '130147', 'EN-2012', 'B-');
+INSERT INTO `student_module_grade` (`id`, `s_id`, `m_code`, `grade`, `sem_id`) VALUES
+(19, '130147J', 'CS-2022', 'B+', 0),
+(20, '130147J', 'EN-2012', 'A-', 0),
+(21, '130147J', 'MA2073', 'A+', 0),
+(22, '130147J', 'ME1802', 'B-', 0),
+(23, '130147J', 'CS-3042', 'A', 0),
+(24, '130150L', 'CS-2022', 'A+', 0),
+(26, '130150L', 'EN-2012', 'A', 0),
+(27, '130150L', 'MA2073', 'A-', 0),
+(28, '130150L', 'ME1802', 'B+', 0),
+(29, '130150L', 'CS-3042', 'A+', 0),
+(30, '130197K', 'CS-2022', 'A-', 0),
+(31, '130197K', 'EN-2012', 'A', 0),
+(32, '130197K', 'MA2073', 'B', 0),
+(33, '130197K', 'ME1802', 'B-', 0),
+(34, '130197K', 'CS-3042', 'A-', 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

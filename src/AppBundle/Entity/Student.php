@@ -108,7 +108,7 @@ class Student
         }
 
         $students = array(); //Make an empty array
-        $stmt = $con->prepare('SELECT id,name,index_no,CGPA,rank FROM student');
+        $stmt = $con->prepare('SELECT id,name,index_no,CGPA,rank FROM student ORDER BY rank');
         $stmt->execute();
         $stmt->bind_result($id,$name,$indexNo,$cGPA,$rank);
         while($stmt->fetch())

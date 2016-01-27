@@ -66,6 +66,61 @@ class StudentController extends Controller
         return $this->render('student/viewall.html.twig', array('students' => $students));
 
     }
+
+    /**
+     * @Route("/student/update", name="student_cgpa_update")
+     */
+    public function updateAction(Request $request)
+    {
+        //With doctrine
+        $students = $this->getDoctrine()->getRepository('AppBundle:Student')->findAll();
+        $results = $this->getDoctrine()->getRepository('AppBundle:Semester_results')->findAll();
+
+        $em = $this->getDoctrine()->getManager();
+
+        //looping through each student
+        foreach($students as $student){
+            $totalMarks = 0.0000;
+            $totalCredits = 0.0;
+
+            //looping through each semester_result
+            foreach($results as $result){
+                if($student->getId() == $result->getStuId()){
+                    $totalMarks += $result->getGPA() * $result->getSemCredits();
+                    $totalCredits += $result->getSemCredits();
+                }
+            }
+
+            //setting student CGPA
+            if($totalCredits>0)
+                $student->setCGPA($totalMarks/$totalCredits);
+            else
+                $student->setCGPA(0);
+
+            $em->persist($student);
+            $em->flush();
+        }
+
+        $students= $this->getDoctrine()->getRepository('AppBundle:Student')->findBy(array(),array('cGPA' => 'DESC') );
+        $rank = 1;
+        $lastGpa = 5.0000;
+        // set ranks 
+        foreach ($students as $student) {
+            if ($student->getCGPA() == $lastGpa) {
+                $rank--;
+            }
+            $student->setRank($rank);
+            $rank++;
+            $lastGpa = $student->getCGPA();
+
+            $em->persist($student);
+            $em->flush();
+           //echo $result->getStuId()."<br>";
+        }
+
+        //die();
+        return $this->redirectToRoute('student_home');
+    }
 }
 
 
