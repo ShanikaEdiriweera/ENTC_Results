@@ -13,12 +13,33 @@ Students
 
 
 {% block body %}
-<ul>
+<table width="100%">
+	<tr>
+		<th>Index No.</th>
+        <th>Name</th>
+        <th>CGPA</th>
+		<th>Rank</th>
+	</tr>
+
     {% for student in students %}
-        <li>
-        	<a href="{{url('student_view',{'id':student.id})}}">{{ student.indexNo|e }} - {{ student.name|e }} - {{ student.cGPA|e }} - {{ student.rank|e }}</a>
-        </li>
+    	<tr>
+	        <td>
+	        	<a href="{{url('student_view',{'id':student.id})}}">{{ student.indexNo|e }}</a>
+	        </td>
+
+	        <td>
+	        	{{ student.name|e }} 
+	        </td>
+
+			<td>
+				{{ student.cGPA|e }}
+	        </td>
+
+	        <td>
+	        	{{ student.rank|e }}
+	        </td>
+        </tr>
     {% endfor %}
-</ul>
+</table>
 
 {% endblock %}

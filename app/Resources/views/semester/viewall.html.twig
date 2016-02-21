@@ -7,19 +7,40 @@ Semester Results
 
 {% block body %}
 <div class="results">
-
     {% for semester in semesters %}
     <h3>{{semester.name | e}}</h3>
+	
+	<table width="100%">
+		<tr>
+			<th>Index No.</th>
+	        <th>Name</th>
+	        <th>GPA</th>
+			<th>Rank</th>
+		</tr>
 
-    <ul>
-    	{% for result in results %}
+	    {% for result in results %}
     		{% if result.semId == semester.id %}
-	        <li>
-	        	{{ result.studentIndex |e }} - {{ result.studentName |e }} - {{ result.gPA}} - {{ result.rank}}
-	        </li>
+	    	<tr>
+		        <td>
+		        	<a href="{{url('student_view',{'id':result.stuId})}}">{{ result.studentIndex |e }}</a>
+		        </td>
+
+		        <td>
+		        	{{ result.studentName |e }} 
+		        </td>
+
+				<td>
+					{{ result.gPA}}
+		        </td>
+
+		        <td>
+		        	{{ result.rank}}
+		        </td>
+	        </tr>
 	        {% endif %}
-    	{% endfor %}
-	</ul>
+	    {% endfor %}
+	</table>
+
     {% endfor %}
 
 	

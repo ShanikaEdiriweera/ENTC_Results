@@ -14,3 +14,18 @@
 li {
 	padding: 3px;
 }
+
+
+/*table*/
+table, th, td {
+    border-collapse: collapse;
+}
+th, td {
+    padding: 2px;
+    padding-left:10px;
+    text-align: left;
+    vertical-align: top;
+    border-style: solid;
+    border-width: 1px;
+    border-color:rgb(220,220,220);
+}
