@@ -6,7 +6,19 @@ Add Marks
 {% endblock %}
 
 {% block body %}
+
+<h3>Add Individual Marks</h3>
 {{ form_start(form) }}
 {{ form_widget(form) }}
-{{ form_end(form) }}    
+{{ form_end(form) }}  
+
+<br>
+<br>
+<br>
+
+<h3>Add Multiple Marks</h3>
+{{ form_start(form2) }}
+{{ form_widget(form2) }}
+{{ form_end(form2) }}
+
 {% endblock %}

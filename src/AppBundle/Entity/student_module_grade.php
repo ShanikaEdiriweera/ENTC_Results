@@ -50,12 +50,15 @@ class student_module_grade
      */
     private $student;
 
+    //marks variable for take all marks as a string
+    private $marks; 
+
 
     public function save()
     {
         $con = Connection::getConnectionObject()->getConnection();
 
-        if($this->id ==null)
+        if($this->id ==null)//check whether the module code 
         {                       
             $stmt = $con->prepare('INSERT INTO `student_module_grade` (`s_id`,`m_code`,`grade`) VALUES (?,?,?)');  
             $stmt->bind_param("sss",$this->sId,$this->mCode,$this->grade);  
@@ -69,6 +72,69 @@ class student_module_grade
             $stmt->execute();  
             $stmt->close();   
         }
+
+        $con->close();
+    }
+
+    public static function saveAll($module,$marks,$doc)
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+
+        $arr = explode(" ",$marks);
+
+        $stuId = "";
+        $grd = "";
+        $counter = 1;
+
+        $em = $doc->getManager();
+
+        foreach ($arr as $element){
+            //arr has both ids and grades
+            if($counter%2 == 1){
+                $stuId = $element;
+
+            }else{
+                $grd = $element;
+
+                //getting stu_mod_grd using doctrine
+                // $stu_mod_grd = $doc->getRepository('AppBundle:student_module_grade')->findOneBy(array('mCode' => $module,'sId'=>$stuId));
+                // //create new stu_mod_grd if not found
+                // if($stu_mod_grd==null) 
+                // {
+                //     $stu_mod_grd = new student_module_grade();
+                //     $stu_mod_grd->setMCode($module);
+                    
+                //     $stu_mod_grd->setSId($stuId);
+                // }
+                // //adding grade
+                // $stu_mod_grd->setGrade($grd);
+                // //die($stu_mod_grd->sId);
+                // $em->persist($stu_mod_grd);
+                // $em->flush();
+
+                //query and check the entry already exist-to do
+                                       
+                $stmt = $con->prepare('INSERT INTO `student_module_grade` (`s_id`,`m_code`,`grade`) VALUES (?,?,?)');  
+                $stmt->bind_param("sss",$stuId,$module,$grd);  
+                $stmt->execute();  
+                $stmt->close();
+            }
+            $counter++;
+        }
+        // if($this->id ==null)
+        // {                       
+        //     $stmt = $con->prepare('INSERT INTO `student_module_grade` (`s_id`,`m_code`,`grade`) VALUES (?,?,?)');  
+        //     $stmt->bind_param("sss",$this->sId,$this->mCode,$this->grade);  
+        //     $stmt->execute();  
+        //     $stmt->close();
+        // }
+        // else
+        // {
+        //     $stmt = $con->prepare('UPDATE student_module_grade SET s_id = ?,m_code = ?,grade = ?');  
+        //     $stmt->bind_param("sss",$this->sId,$this->mCode,$this->grade);  
+        //     $stmt->execute();  
+        //     $stmt->close();   
+        // }
 
         $con->close();
     }
@@ -205,4 +271,18 @@ class student_module_grade
     {
         return $this->student;
     }
+
+    //getters setters for marks
+    public function setMarks($marks)
+    {
+        $this->marks = $marks;
+
+        return $this;
+    }
+
+    public function getMarks()
+    {
+        return $this->marks;
+    }
+
 }

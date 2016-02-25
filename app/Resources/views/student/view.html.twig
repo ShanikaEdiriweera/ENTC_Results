@@ -6,8 +6,49 @@ Student Details
 {% endblock %}
 
 {% block body %}
-{{student.indexNo}}<br>
-{{student.name}}<br>
-{{student.cGPA}}<br>
-{{student.rank}}<br>
+
+<table align="center" width="50%">
+		<tr>
+		        <td>
+		        	Index No.
+		        </td>
+
+		        <td>
+		        	{{student.indexNo}}
+		        </td>
+		</tr>
+
+		<tr>
+		        <td>
+		        	Name
+		        </td>
+
+		        <td>
+		        	{{student.name}}
+		        </td>
+		</tr>
+
+		<tr>
+		        <td>
+		        	CGPA
+		        </td>
+
+		        <td>
+		        	{{student.cGPA}}
+		        </td>
+		</tr>
+
+		<tr>
+		        <td>
+		        	Rank
+		        </td>
+
+		        <td>
+		        	{{student.rank}}
+		        </td>
+		</tr>
+
+</table>
+
+
 {% endblock %}

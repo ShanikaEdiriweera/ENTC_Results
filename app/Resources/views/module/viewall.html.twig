@@ -13,12 +13,48 @@ Modules
 
 
 {% block body %}
-<ul>
+
+<table align="center" width="80%">
+	<tr>
+		<th>Module Code</th>
+        <th>Title</th>
+        <th>Credits</th>
+		<th>GPA/non-GPA</th>
+		<th>Semester</th>
+	</tr>
+
     {% for module in modules %}
-        <li>
-        	<a href="{{url('module_results',{'mod_code':module.code})}}">{{ module.code|e }} - {{ module.title|e }} - {{ module.credits|e }} - {{ module.gpa|e }} - {{ module.semId|e }} </a>
-        </li>
+
+    	<tr>
+	        <td>
+	        	<a href="{{url('module_results',{'mod_code':module.code})}}">{{ module.code|e }}</a>
+	        </td>
+
+	        <td>
+	        	{{ module.title|e }}
+	        </td>
+
+			<td>
+				{{ module.credits|e }}
+	        </td>
+
+	        <td>
+	        	{% if module.gpa == 1 %}
+				    GPA
+				{% else %}
+				    non-GPA
+				{% endif %}
+
+	        </td>
+
+	        <td>
+	        	{{ module.semId|e }}
+	        </td>
+
+        </tr>
+
     {% endfor %}
-</ul>
+
+</table>
 
 {% endblock %}

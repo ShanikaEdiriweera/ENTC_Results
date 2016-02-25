@@ -83,8 +83,37 @@ class ResultController extends Controller
             return $this->redirectToRoute('result_create');
         }
 
-        // replace this example code with whatever you need
-        return $this->render('result/create.html.twig', array('form' => $form->createView()));
+        ////////////////////////form 2 for add multiple//////////////////////////////////
+        
+        $form2Data = array('message' => 'Type your message here');
+        $form2 = $this->createFormBuilder($form2Data)
+            ->add('m_code',ChoiceType::class, array(
+                'choices'  => $moduleIds,
+                'choices_as_values' => true,
+                'label'=>'Module'
+                    ))
+            ->add('marks', TextType::class)
+            ->add('save', SubmitType::class, array('label' => 'Add Marks'))
+            ->getForm();
+
+        $form2->handleRequest($request);
+
+        if ($form2->isSubmitted() && $form2->isValid()) {
+            // ... perform some action, such as saving the task to the database
+            $data = $form2->getData();
+            //die($data['marks']);
+            $module = $data['m_code'];
+            $marks = $data['marks'];
+            //$em = $this->getDoctrine()->getManager();
+            $doc = $this->getDoctrine();
+            student_module_grade::saveAll($module, $marks,$doc);
+
+            return $this->redirectToRoute('result_create');
+        }
+        //////////////////////////////////////////////////////////
+
+        // ADDED THE FORM2 array
+        return $this->render('result/create.html.twig', array('form' => $form->createView(), 'form2' => $form2->createView()));
     }
 
     /**
