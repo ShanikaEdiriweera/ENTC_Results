@@ -80,7 +80,9 @@ class student_module_grade
     {
         $con = Connection::getConnectionObject()->getConnection();
 
-        $arr = explode(" ",$marks);
+        //splitting the string from spreadsheet
+        //$arr = explode(" ",$marks);
+        $arr =preg_split('/\s+/', $marks);
 
         $stuId = "";
         $grd = "";
