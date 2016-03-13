@@ -104,12 +104,16 @@ class StudentController extends Controller
         $students= $this->getDoctrine()->getRepository('AppBundle:Student')->findBy(array(),array('cGPA' => 'DESC') );
         $rank = 1;
         $lastGpa = 5.0000;
+        //to catch equal ranks
+        $lastRank = 0;
         // set ranks 
         foreach ($students as $student) {
             if ($student->getCGPA() == $lastGpa) {
-                $rank--;
+                $student->setRank($lastRank);
+            }else{
+                $student->setRank($rank);
+                $lastRank = $rank;
             }
-            $student->setRank($rank);
             $rank++;
             $lastGpa = $student->getCGPA();
 
