@@ -1,0 +1,16 @@
+{# app/Resources/views/admin/viewall.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Admins
+{% endblock %}
+
+{% block body %}
+<ul>
+    {% for admin in admins %}
+        <li>{{ admin.name|e }} - {{ admin.username|e }} - {{ admin.email|e }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+
