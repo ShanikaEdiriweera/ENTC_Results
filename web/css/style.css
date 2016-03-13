@@ -29,3 +29,24 @@ th, td {
     border-width: 1px;
     border-color:rgb(220,220,220);
 }
+
+/*semester nav list*/
+ul#semmenu {
+    padding: 0;
+}
+
+ul#semmenu li {
+    display: inline;
+}
+
+ul#semmenu li a {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px 4px 0 0;
+}
+
+ul#semmenu li a:hover {
+    background-color: orange;
+}
