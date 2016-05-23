@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Student;
 use AppBundle\Entity\student_module_grade;
+use AppBundle\Entity\Semester_results;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType; 
@@ -57,7 +58,9 @@ class StudentController extends Controller
         $student =  Student::getOne($id);
         //get module results of the student
         $results = student_module_grade::getModuleResults($id);
-        return $this->render('student/view.html.twig', array('student' =>$student, 'results'=>$results));  
+        //get semester results of the student
+        $semResults = Semester_results::getSemesterResults($id);
+        return $this->render('student/view.html.twig', array('student' =>$student, 'results'=>$results, 'semResults'=>$semResults));  
     }
 
     /**

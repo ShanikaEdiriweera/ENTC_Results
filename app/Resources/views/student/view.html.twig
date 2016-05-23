@@ -28,8 +28,16 @@ Student Details
 
 <!--add tabs for semesters-->
 
-{% for i in 1..8 %}
+    {% for i in 1..8 %}
         <h5>Semester {{i}}</h5>
+
+<!--        too much loops / use order by in query to get semester order and remove loop-->
+        {% for semResult in semResults %}
+            {% if semResult.semId == i %}
+                <h6>SGPA : {{semResult.gPA}} | Rank : {{semResult.rank}} </h6>
+            {% endif %}
+        {% endfor %}
+
         <table align="center" width="80%">
             <tr>
                 <th>Module Code</th>

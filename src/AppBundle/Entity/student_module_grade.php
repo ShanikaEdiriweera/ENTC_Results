@@ -52,15 +52,11 @@ class student_module_grade
 
     //marks variable for take all marks as a string
     private $marks; 
-<<<<<<< HEAD
     
     //Semester ID
     private $semId;
     //Semester ID
     private $mTitle;
-=======
-
->>>>>>> 1fbdffd3504eafdbdd7bb1d903182081c234fec9
 
     public function save()
     {
@@ -88,13 +84,9 @@ class student_module_grade
     {
         $con = Connection::getConnectionObject()->getConnection();
 
-<<<<<<< HEAD
-        $arr = explode(" ",$marks);
-=======
         //splitting the string from spreadsheet
-        //$arr = explode(" ",$marks);
-        $arr =preg_split('/\s+/', $marks);
->>>>>>> 1fbdffd3504eafdbdd7bb1d903182081c234fec9
+        $arr = explode(" ",$marks);
+        //$arr =preg_split('/\s+/', $marks);
 
         $stuId = "";
         $grd = "";
@@ -111,7 +103,7 @@ class student_module_grade
                 $grd = $element;
 
                 //getting stu_mod_grd using doctrine
-<<<<<<< HEAD
+
                 $stu_mod_grd = $doc->getRepository('AppBundle:student_module_grade')->findOneBy(array('mCode' => $module,'sId'=>$stuId));
                 //create new stu_mod_grd if not found
                 if($stu_mod_grd==null) 
@@ -126,29 +118,7 @@ class student_module_grade
                 //die($stu_mod_grd->sId);
                 $em->persist($stu_mod_grd);
                 $em->flush();
-=======
-                // $stu_mod_grd = $doc->getRepository('AppBundle:student_module_grade')->findOneBy(array('mCode' => $module,'sId'=>$stuId));
-                // //create new stu_mod_grd if not found
-                // if($stu_mod_grd==null) 
-                // {
-                //     $stu_mod_grd = new student_module_grade();
-                //     $stu_mod_grd->setMCode($module);
-                    
-                //     $stu_mod_grd->setSId($stuId);
-                // }
-                // //adding grade
-                // $stu_mod_grd->setGrade($grd);
-                // //die($stu_mod_grd->sId);
-                // $em->persist($stu_mod_grd);
-                // $em->flush();
 
-                //query and check the entry already exist-to do
-                                       
-                $stmt = $con->prepare('INSERT INTO `student_module_grade` (`s_id`,`m_code`,`grade`) VALUES (?,?,?)');  
-                $stmt->bind_param("sss",$stuId,$module,$grd);  
-                $stmt->execute();  
-                $stmt->close();
->>>>>>> 1fbdffd3504eafdbdd7bb1d903182081c234fec9
             }
             $counter++;
         }
@@ -169,12 +139,9 @@ class student_module_grade
 
         $con->close();
     }
-<<<<<<< HEAD
+
     
     //modify to get only the relevent module results
-=======
-
->>>>>>> 1fbdffd3504eafdbdd7bb1d903182081c234fec9
     public static function getModuleResults($mCode)
     {
         $con = Connection::getConnectionObject()->getConnection();
@@ -351,7 +318,6 @@ class student_module_grade
     {
         return $this->marks;
     }
-<<<<<<< HEAD
     
     //getters setters for semId
     public function setSemId($sem)
@@ -365,7 +331,4 @@ class student_module_grade
     {
         return $this->semId;
     }
-=======
->>>>>>> 1fbdffd3504eafdbdd7bb1d903182081c234fec9
-
 }

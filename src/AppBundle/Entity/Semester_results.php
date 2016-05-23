@@ -236,6 +236,37 @@ class Semester_results
         
         return $results;
     }
+    
+    
+    //method to get student's semester results 
+    public static function getSemesterResults($stuId)
+    {
+        $con = Connection::getConnectionObject()->getConnection();
+        // Check connection
+        if (mysqli_connect_errno())
+        {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+
+        $results = array(); //Make an empty array
+        $stmt = $con->prepare('SELECT semester_results.id, semester_results.sem_id, semester_results.stu_id, semester_results.GPA, semester_results.rank FROM semester_results WHERE stu_id = ?');
+        $stmt->bind_param("s",$stuId);
+        $stmt->execute();
+        $stmt->bind_result($id,$semId,$stuId,$gPA,$rank);
+        while($stmt->fetch())
+        {
+            $result = new Semester_results();
+            $result->id=$id;
+            $result->setSemId($semId);
+            $result->setStuId($stuId);
+            $result->setGPA($gPA);
+            $result->setRank($rank);
+            array_push($results,$result); //Push one by one
+        }
+        $stmt->close();
+        
+        return $results;
+    }
 
     /**
      * Get id
