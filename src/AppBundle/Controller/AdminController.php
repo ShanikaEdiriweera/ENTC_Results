@@ -43,6 +43,7 @@ class AdminController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             // ... perform some action, such as saving the task to the database
+            $admin->setIsActive(true);
             $admin->save();
 
             return $this->redirectToRoute('admin_home');

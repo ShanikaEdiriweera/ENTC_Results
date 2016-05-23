@@ -7,10 +7,10 @@ Semester Results
 
 {% block links %}
     {% for semester in semesters %}
-        <div class="btn-group" >
+        <div class="btn-group" id="semmenu">
             <a href="#{{semester.name}}"> <button type="button" class="btn btn-xs btn-primary">{{semester.name}}</button></a>
         </div>
-    {% endfor %}
+    {% endfor %} 
 {% endblock %}
 
 {% block body %}

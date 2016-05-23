@@ -1,3 +1,125 @@
+
+# # app/config/security.yml
+# security:
+#     encoders:
+#         AppBundle\Entity\Admin:
+#             algorithm: bcrypt
+
+#     # ...
+
+#     providers:
+#         our_db_provider:
+#             entity:
+#                 class: AppBundle:Admin
+#                 property: username
+#                 # if you're using multiple entity managers
+#                 # manager_name: customer
+
+#     firewalls:
+#         main:
+#             anonymous: ~
+# #            pattern:    ^/
+#             http_basic: ~
+#             provider: our_db_provider
+#             form_login:
+#                 login_path: /login
+#                 check_path: /login_check
+#             logout:
+#                 path:   /logout
+#                 invalidate_session: false
+
+#     access_control:
+#         # require ROLE_ADMIN for /admin*
+#         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#         - { path: ^/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#         - { path: ^/home, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#         - { path: ^/, roles: ROLE_ADMIN }
+
+
+
+
+
+
+#THIs is all history
+## To get started with security, check out the documentation:
+### http://symfony.com/doc/current/book/security.html
+##security:
+##
+##    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+##    providers:
+##        in_memory:
+##            memory: ~
+##
+##    firewalls:
+##        # disables authentication for assets and the profiler, adapt it according to your needs
+##        dev:
+##            pattern: ^/(_(profiler|wdt)|css|images|js)/
+##            security: false
+##
+##        default:
+##            anonymous: ~
+##
+##        main:
+##            anonymous: ~
+##            # activate different ways to authenticate
+##
+##            http_basic: ~
+##            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+##
+##            # form_login: ~
+##            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+###            form_login:
+###                login_path: /login
+###                check_path: /login_check
+#
+#
+#
+#
+## app/config/security.yml
+#security:
+#    providers:
+#        in_memory:
+#            memory:
+#                users:
+#                    ryan:
+#                        password: 1234
+#                        roles: 'ROLE_USER'
+#                    admin:
+#                        password: 1234
+#                        roles: 'ROLE_ADMIN'
+#
+#        our_db_provider:
+#            entity:
+#                class: AppBundle:AuthorizingOfficer
+#
+#    encoders:
+#            Symfony\Component\Security\Core\User\User: plaintext
+#            AppBundle\Entity\AuthorizingOfficer:
+#                algorithm: plaintext
+#
+#
+#    firewalls:
+#        dev:
+#            pattern: ^/(_(profiler|wdt)|css|images|js)/
+#            security: false
+#
+#        main:
+#            anonymous: ~
+#            provider: our_db_provider
+#            form_login:
+#                login_path: /login
+#                check_path: /login_check
+##        secured_area:
+##                    logout:
+##                        path:   /logout
+##                        target: /
+#
+#    access_control:
+#        # require ROLE_ADMIN for /admin*
+#        - { path: ^/player/create, roles: ROLE_ADMIN }
+
+
+
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/book/security.html
 security:

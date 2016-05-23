@@ -1,0 +1,14 @@
+{# app/Resources/views/security/signup.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Sign Up
+{% endblock %}
+
+{% block body %}
+    <span style="color: red">{{ error }}</span>
+    {{ form_start(form) }}
+
+    {{ form_end(form) }}
+{% endblock %}

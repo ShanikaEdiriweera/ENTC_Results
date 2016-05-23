@@ -26,6 +26,7 @@
             </div> -->
 
             <ul>
+              {% if is_granted('ROLE_ADMIN') %}
                <li><a href='{{url('homepage')}}'><span>Home</span></a></li>
                <li><a href='{{url('student_home')}}'><span>Students' Ranking</span></a></li>
                <li><a href='{{url('semester_home')}}'><span>Semester Results</span></a></li>
@@ -40,7 +41,26 @@
                <li><a href='{{url('module_home')}}'><span>Module Results</span></a></li>
                <li><a href='{{url('admin_home')}}'><span>Administration</span></a></li>
                <li class='last'><a href='{{url('result_create')}}'><span>Add Marks</span></a></li>
-            </ul>
+
+                <li><a href='{{url('logout')}}'><span>Logout ( {{ app.user.username }} )</span></a></li>
+              {% endif %}
+
+              {% if not is_granted('ROLE_ADMIN') %}
+                  <li><a href='{{url('homepage')}}'><span>Home</span></a></li>
+                  <li><a href='{{url('student_home')}}'><span>Students' Ranking</span></a></li>
+                  <li><a href='{{url('semester_home')}}'><span>Semester Results</span></a></li>
+                  <li><a href='{{url('module_home')}}'><span>Module Results</span></a></li>
+
+<!-- remove after debugging login -->
+<li><a href='{{url('admin_home')}}'><span>Administration</span></a></li>
+               <li class='last'><a href='{{url('result_create')}}'><span>Add Marks</span></a></li>
+<!--  -->
+
+                  <li><a href='{{url('login_route')}}'><span>Login</span></a></li>
+                  <li><a href='{{url('signup')}}'><span>Sign Up</span></a></li>
+              {% endif %}
+              
+             </ul>
 
 <!-- login ul align right -->
 <!--             <ul class="align-right">
@@ -62,6 +82,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">{{ block('title') }}<div class="pull-right">{% block links %}{% endblock %}</div></div>
             <div class="panel-body">
+                <div class='error_message'> {{ form_error | default("") }} </div>
                 {% block body %}{% endblock %}
 
                 {% block javascripts %}{% endblock %}            
@@ -69,5 +90,9 @@
         </div>
 
     
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     </body>
 </html>
