@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Student;   
+use AppBundle\Entity\Student;
+use AppBundle\Entity\student_module_grade;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType; 
@@ -54,7 +55,9 @@ class StudentController extends Controller
     public function viewAction($id, Request $request)
     {
         $student =  Student::getOne($id);
-        return $this->render('student/view.html.twig', array('student' =>$student));  
+        //get module results of the student
+        $results = student_module_grade::getModuleResults($id);
+        return $this->render('student/view.html.twig', array('student' =>$student, 'results'=>$results));  
     }
 
     /**

@@ -5,10 +5,18 @@
 Semester Results
 {% endblock %}
 
+{% block links %}
+    {% for semester in semesters %}
+        <div class="btn-group" >
+            <a href="#{{semester.name}}"> <button type="button" class="btn btn-xs btn-primary">{{semester.name}}</button></a>
+        </div>
+    {% endfor %}
+{% endblock %}
+
 {% block body %}
 <div class="results">
     {% for semester in semesters %}
-    <h3>{{semester.name | e}}</h3>
+    <h3 id="{{semester.name}}">{{semester.name | e}}</h3>
 	
 	<table width="100%">
 		<tr>

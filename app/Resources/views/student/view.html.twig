@@ -6,8 +6,53 @@ Student Details
 {% endblock %}
 
 {% block body %}
-{{student.indexNo}}<br>
-{{student.name}}<br>
-{{student.cGPA}}<br>
-{{student.rank}}<br>
+
+<table align="center" width="50%">
+		<tr>
+		        <td>Index No.</td>
+		        <td>{{student.indexNo}}</td>
+		</tr>
+		<tr>
+		        <td>Name</td>
+		        <td>{{student.name}}</td>
+		</tr>
+		<tr>
+		        <td>CGPA</td>
+		        <td>{{student.cGPA}}</td>
+		</tr>
+		<tr>
+		        <td>Rank</td>
+		        <td>{{student.rank}}</td>
+		</tr>
+</table>
+
+<!--add tabs for semesters-->
+
+{% for i in 1..8 %}
+        <h5>Semester {{i}}</h5>
+        <table align="center" width="80%">
+            <tr>
+                <th>Module Code</th>
+                <th>Title</th>
+                <th>Grade</th>
+            </tr>
+
+            {% for result in results %}
+                {% if result.semId == i %}
+                    <tr>
+                        <td>
+                            {{ result.mCode|e }}
+                        </td>
+                        <td>
+                            {{ result.mTitle|e }}
+                        </td>
+                        <td>
+                            {{ result.grade|e }}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    {% endfor %}
+
 {% endblock %}
