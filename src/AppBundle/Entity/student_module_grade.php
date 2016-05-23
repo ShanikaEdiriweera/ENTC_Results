@@ -180,7 +180,7 @@ class student_module_grade
         }
 
         $results = array(); //Make an empty array
-        $stmt = $con->prepare('SELECT student_module_grade.id,s_id,m_code,module.title,module.sem_id,grade FROM student_module_grade INNER JOIN module ON student_module_grade.m_code = module.code WHERE s_id = ?');
+        $stmt = $con->prepare('SELECT smg.id, smg.s_id, smg.m_code, m.title, m.sem_id, smg.grade FROM student_module_grade smg INNER JOIN module m ON smg.m_code = m.code INNER JOIN student s ON smg.s_id = s.index_no WHERE s.id = ?');
         $stmt->bind_param("s",$stuId);
         $stmt->execute();
         $stmt->bind_result($id,$sId,$mCode,$title,$sem,$grade);
@@ -330,5 +330,18 @@ class student_module_grade
     public function getSemId()
     {
         return $this->semId;
+    }
+    
+    //getters setters for mTitle
+    public function setMTitle($title)
+    {
+        $this->mTitle = $title;
+
+        return $this;
+    }
+
+    public function getMTitle()
+    {
+        return $this->mTitle;
     }
 }
