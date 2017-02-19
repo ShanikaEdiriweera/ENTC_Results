@@ -1,4 +1,5 @@
 ENTC_Results
 ============
 
-A Symfony project created on January 7, 2016, 8:41 am.
+An online university students' examinations results management system.
+Customized for ENTC department of University of Moratuwa.
